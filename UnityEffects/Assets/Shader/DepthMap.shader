@@ -40,6 +40,7 @@
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				//o.texPos = ComputeScreenPos(v.vertex);//变换到屏幕坐标
+				o.texPos = v.vertex;
 				o.texPos.x = o.vertex.x * 0.5f + 0.5f * o.vertex.w;//变换到x[0,w] y[0,w]的空间
 				o.texPos.y = o.vertex.y * 0.5f + 0.5f * o.vertex.w;
 				return o;
