@@ -1,13 +1,13 @@
 ﻿Shader "UnityEffects/DepthMap"
 {
-	//为ShadowCaster生成深度图
+	//生成深度图
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 	}
 	SubShader
 	{
-		Tags { "RenderType"="ShadowCaster" }
+		Tags { "RenderType"="ShadowMap" }
 		LOD 100
 
 		Pass
@@ -22,12 +22,14 @@
 			{
 				float4 vertex : POSITION;
 				float4 texPos : TEXCOORD1;
+				float2 uv : TEXCOORD0;
 			};
 
 			struct v2f
 			{
 				float4 texPos : TEXCOORD1;
 				float4 vertex : SV_POSITION;
+				float2 uv : TEXCOORD0;
 			};
 
 			sampler2D _MainTex;
@@ -40,9 +42,10 @@
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				//o.texPos = ComputeScreenPos(v.vertex);//变换到屏幕坐标
-				o.texPos = v.vertex;
+				o.texPos = o.vertex;
 				o.texPos.x = o.vertex.x * 0.5f + 0.5f * o.vertex.w;//变换到x[0,w] y[0,w]的空间
 				o.texPos.y = o.vertex.y * 0.5f + 0.5f * o.vertex.w;
+				o.uv = v.uv;
 				return o;
 			}
 			
@@ -56,4 +59,5 @@
 			ENDCG
 		}
 	}
+	FallBack "Diffuse"//要想在ReplacementShader使用_CameraDepthTexture，那么记得增加shadowCaster pass,或者FallBack一个
 }
