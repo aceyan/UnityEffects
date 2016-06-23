@@ -6,7 +6,6 @@ public class ShadowMap : MonoBehaviour
 
     private Material _mat;
     private Camera _lightCamera;
-    // Use this for initialization
     void Start()
     {
         MeshRenderer render = GetComponent<MeshRenderer>();
@@ -22,18 +21,17 @@ public class ShadowMap : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void OnWillRenderObject()
     {
         if (_mat != null && _lightCamera != null)
         {
-            _mat.SetMatrix("_ViewProjectionMat", _lightCamera.projectionMatrix * _lightCamera.worldToCameraMatrix);//注意cg中用的是左乘，向量是列向量
+            //Gl
+           //_mat.SetMatrix("_ViewProjectionMat", _lightCamera.projectionMatrix * _lightCamera.worldToCameraMatrix);//我发现这个投影矩阵式z-[-w,w]的，原来这个矩阵并不是mvp中的m： http://docs.unity3d.com/ScriptReference/Camera-projectionMatrix.html
+            //maybe Dx
+            _mat.SetMatrix("_ViewProjectionMat", GL.GetGPUProjectionMatrix(_lightCamera.projectionMatrix, true) * _lightCamera.worldToCameraMatrix);
             _mat.SetTexture("_DepthMap", _lightCamera.targetTexture);
+            _mat.SetFloat("_NearClip", _lightCamera.nearClipPlane);
+            _mat.SetFloat("_FarClip", _lightCamera.farClipPlane);
         }
     }
 

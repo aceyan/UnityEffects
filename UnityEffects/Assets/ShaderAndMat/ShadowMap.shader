@@ -35,6 +35,8 @@
 			float4 _MainTex_ST;
 			uniform matrix _ViewProjectionMat;//视矩阵*投影矩阵
 			uniform sampler2D _DepthMap;//深度图
+			uniform float _NearClip;
+			uniform float _FarClip;
 			float4 _DepthMap_ST;
 			
 			v2f vert (appdata v)
@@ -46,25 +48,49 @@
 				//o.projectionPos = mul(  _ViewProjectionMat *  _Object2World, v.vertex);//投影到贴图的齐次剪裁空间
 
 				matrix mvp = mul(_ViewProjectionMat ,_Object2World);
-				o.projectionPos = mul( mvp, v.vertex);//投影到贴图的齐次剪裁空间
+				o.projectionPos = mul( mvp,float4(v.vertex.xyz,1));//投影到贴图的齐次剪裁空间
 				return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
+			#if UNITY_UV_STARTS_AT_TOP
+			float scale = -1.0;
+			#else
+			float scale = 1.0;
+			#endif
 				//
 				float4 uvPos = i.projectionPos;
-				uvPos.x = uvPos.x * 0.5 + uvPos.w * 0.5;//变换到[0,w]
-				uvPos.y = uvPos.y * 0.5 + uvPos.w * 0.5;//变换到[0,w]
-				uvPos = uvPos / uvPos.w;//变换到[0,1]纹理空间
+				uvPos.x = uvPos.x * 0.5f + uvPos.w * 0.5f;//变换到[0,w]
+				uvPos.y = uvPos.y * 0.5f * scale + uvPos.w * 0.5f;//变换到[0,w]
+				//uvPos.z = uvPos.z * 0.5f + uvPos.w * 0.5f;//变换到[0,w]
+				//uvPos = uvPos / uvPos.w;//变换到[0,1]纹理空间
 
-				float depth = tex2D(_DepthMap, uvPos.xy).r;//从深度图中取出深度
-				
-				float depthPixel = uvPos.z;//像素深度
-				fixed4 textureCol = tex2D(_MainTex, i.uv);
-				fixed4 shadowCol = depthPixel > depth ? fixed4(0.3,0.3,0.3,1) : 1;
+
+				float depth =  DecodeFloatRGBA(tex2D(_DepthMap, uvPos.xy/ uvPos.w));//从深度图中取出深度
+
+				float depthPixel = uvPos.z / uvPos.w;//像素深度,要分openGL和Dx平台来
+				//if(uvPos.z > 0)
+				//{
+					//return float4(1,0,0,1);
+				//}
+				//else
+				//{
+				//	return float4(0,1,0,1);
+				//}
+
+				//公式：http://www.humus.name/temp/Linearize%20depth.txt
+				//depthPixel = _NearClip * (depthPixel + 1.0) / (_FarClip + _NearClip - depthPixel * (_FarClip - _NearClip));
+
+
+
+				//depthPixel = (2 * _NearClip) / (_FarClip + _NearClip - depthPixel * (_FarClip - _NearClip));
+				depthPixel =  _NearClip / (_FarClip - depthPixel*(_FarClip - _NearClip));
+				float4 textureCol = tex2D(_MainTex, i.uv);
+				float4 shadowCol = (depthPixel - depth) > 0.0002 ? 0.3 : 1;
 
 				return textureCol * shadowCol;
+				
 			}
 			ENDCG
 		}

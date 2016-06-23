@@ -3,11 +3,8 @@ using System.Collections;
 
 public class CreateDepthMap : MonoBehaviour 
 {
-
-    public Shader depthMapShader;
-    public RenderTexture depthMap;
     public Material material;
-	// Use this for initialization
+    public Shader depthMapShader;
 	void Start () 
     {
         Camera camera = GetComponent<Camera>();
@@ -15,13 +12,9 @@ public class CreateDepthMap : MonoBehaviour
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.backgroundColor = Color.white;
         camera.SetReplacementShader(depthMapShader, "RenderType");
+        RenderTexture depthMap = new RenderTexture(1024, 1024, 0);
+        depthMap.format = RenderTextureFormat.ARGB32;
         camera.targetTexture = depthMap;
-	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
-	
 	}
 
     //void OnRenderImage(RenderTexture source, RenderTexture destination)

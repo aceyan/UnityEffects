@@ -9,6 +9,7 @@
 	{
 		Tags { "RenderType"="ShadowMap" }
 		LOD 100
+		ZWrite Off
 
 		Pass
 		{
@@ -53,8 +54,8 @@
 			{
 				fixed4 col = float4(0,0,0,1);
 				//unity 生成的深度图的深度保存在r通道中
-				col.r = tex2D(_CameraDepthTexture, i.texPos.xy / i.texPos.w).r;//先把texPos归一化到 [0,1] 纹理坐标空间，对深度图进行采样
-				return col;
+				float z = Linear01Depth(tex2D(_CameraDepthTexture, i.texPos.xy / i.texPos.w).r);//先把texPos归一化到 [0,1] 纹理坐标空间，对深度图进行采样
+				return EncodeFloatRGBA(z);
 			}
 			ENDCG
 		}

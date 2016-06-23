@@ -25,13 +25,14 @@
 
 			struct v2f
 			{
-				float4 vertex : TEXCOORD1;
+				float4 vertex : SV_POSITION;
 				float2 uv : TEXCOORD0;
 			};
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
             uniform sampler2D _CameraDepthTexture;
+
 			
 			v2f vert (appdata v)
 			{
@@ -41,10 +42,10 @@
 				return o;
 			}
 			
-			fixed4 frag (v2f i) : SV_Target
+			float4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_CameraDepthTexture,i.uv);
-				return col;
+				float4 col = tex2D(_CameraDepthTexture, i.uv);//先把texPos归一化到 [0,1] 纹理坐标空间，对深度图进行采样
+				return col.r;
 			}
 			ENDCG
 		}
