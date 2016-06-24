@@ -54,17 +54,17 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-			#if UNITY_UV_STARTS_AT_TOP
-			float scale = -1.0;
-			#else
-			float scale = 1.0;
-			#endif
+			
 				//
 				float4 uvPos = i.projectionPos;
 				uvPos.x = uvPos.x * 0.5f + uvPos.w * 0.5f;//变换到[0,w]
-				uvPos.y = uvPos.y * 0.5f * scale + uvPos.w * 0.5f;//变换到[0,w]
+				uvPos.y = uvPos.y * 0.5f    + uvPos.w * 0.5f;//变换到[0,w]
 				//uvPos.z = uvPos.z * 0.5f + uvPos.w * 0.5f;//变换到[0,w]
 				//uvPos = uvPos / uvPos.w;//变换到[0,1]纹理空间
+				//我们要把投影的点映射到纹理，就必须考虑uv空间y的方向
+				#if UNITY_UV_STARTS_AT_TOP
+			uvPos.y = uvPos.w - uvPos.y;
+			#endif
 
 
 				float depth =  DecodeFloatRGBA(tex2D(_DepthMap, uvPos.xy/ uvPos.w));//从深度图中取出深度

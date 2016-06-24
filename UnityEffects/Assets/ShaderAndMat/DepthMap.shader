@@ -23,14 +23,12 @@
 			{
 				float4 vertex : POSITION;
 				float4 texPos : TEXCOORD1;
-				float2 uv : TEXCOORD0;
 			};
 
 			struct v2f
 			{
 				float4 texPos : TEXCOORD1;
 				float4 vertex : SV_POSITION;
-				float2 uv : TEXCOORD0;
 			};
 
 			sampler2D _MainTex;
@@ -45,8 +43,9 @@
 				//o.texPos = ComputeScreenPos(v.vertex);//变换到屏幕坐标
 				o.texPos = o.vertex;
 				o.texPos.x = o.vertex.x * 0.5f + 0.5f * o.vertex.w;//变换到x[0,w] y[0,w]的空间
-				o.texPos.y = o.vertex.y * 0.5f + 0.5f * o.vertex.w;
-				o.uv = v.uv;
+				o.texPos.y = o.vertex.y * 0.5f  + 0.5f * o.vertex.w;
+				if (_ProjectionParams.x < 0)//rtt的uv空间与平台有关
+					 o.texPos.y = o.vertex.w - o.texPos.y;//http://docs.unity3d.com/Manual/SL-PlatformDifferences.html
 				return o;
 			}
 			

@@ -12,7 +12,7 @@ public class CreateDepthMap : MonoBehaviour
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.backgroundColor = Color.white;
         camera.SetReplacementShader(depthMapShader, "RenderType");
-        RenderTexture depthMap = new RenderTexture(1024, 1024, 0);
+        RenderTexture depthMap = new RenderTexture(Screen.width, Screen.height, 0);
         depthMap.format = RenderTextureFormat.ARGB32;
         camera.targetTexture = depthMap;
 	}
