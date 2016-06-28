@@ -211,7 +211,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 21.82
-  field of view: 60
+  field of view: 62
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -328,6 +328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71cf1fa0dac8e3d4497654f75189ae3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mat: {fileID: 0}
+  _lightCamera: {fileID: 0}
 --- !u!1 &2111293920
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,6 +362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: ed966d9787c5a054387175fe244da212, type: 2}
   depthMapShader: {fileID: 4800000, guid: df1b163a9a8531f4cac4eb03d8093157, type: 3}
+  _mainCamera: {fileID: 0}
+  _lightCamera: {fileID: 0}
 --- !u!92 &2111293923
 Behaviour:
   m_ObjectHideFlags: 0
@@ -393,8 +397,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 10
   field of view: 129
-  orthographic: 0
-  orthographic size: 6.38
+  orthographic: 1
+  orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
