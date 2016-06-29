@@ -328,8 +328,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71cf1fa0dac8e3d4497654f75189ae3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mat: {fileID: 0}
-  _lightCamera: {fileID: 0}
 --- !u!1 &2111293920
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,8 +360,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: ed966d9787c5a054387175fe244da212, type: 2}
   depthMapShader: {fileID: 4800000, guid: df1b163a9a8531f4cac4eb03d8093157, type: 3}
-  _mainCamera: {fileID: 0}
-  _lightCamera: {fileID: 0}
 --- !u!92 &2111293923
 Behaviour:
   m_ObjectHideFlags: 0
@@ -418,10 +414,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2111293920}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 4.19, z: -0}
+  m_LocalRotation: {x: 0.68063635, y: 0.19166182, z: 0.19166182, w: 0.6806362}
+  m_LocalPosition: {x: -2.9, y: 4.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 58.5464, y: 90, z: 90}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
