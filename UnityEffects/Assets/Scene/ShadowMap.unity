@@ -234,7 +234,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 613663690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.81, z: -8.98}
+  m_LocalPosition: {x: 0, y: 5.02, z: -8.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -383,7 +383,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -414,10 +414,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2111293920}
-  m_LocalRotation: {x: 0.68063635, y: 0.19166182, z: 0.19166182, w: 0.6806362}
-  m_LocalPosition: {x: -2.9, y: 4.74, z: 0}
+  m_LocalRotation: {x: 0.74745136, y: -0.0031932394, z: -0.004869316, w: 0.66429114}
+  m_LocalPosition: {x: 0.1, y: 14, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 58.5464, y: 90, z: 90}
+  m_LocalEulerAnglesHint: {x: 83.2262, y: -174.3943, z: -174.5304}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
