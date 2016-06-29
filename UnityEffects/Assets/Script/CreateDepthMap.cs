@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CreateDepthMap : MonoBehaviour 
 {
@@ -7,6 +8,7 @@ public class CreateDepthMap : MonoBehaviour
     public Shader depthMapShader;
     private Camera _mainCamera;
     private Camera _lightCamera;
+    private List<Vector4> _vList = new List<Vector4>();
 	void Start () 
     {
         _lightCamera = GetComponent<Camera>();
@@ -32,7 +34,6 @@ public class CreateDepthMap : MonoBehaviour
     {//根据主相机的视锥来确定灯光相机的设置
         //1、	求光view矩阵  用world to camera
         Matrix4x4 viewM = _lightCamera.worldToCameraMatrix;
-        Vector4 v =  viewM * Vector4.one ;
         //2、	求视锥8顶点  n平面（aspect * y, tan(r/2)* n,n）  f平面（aspect*y, tan(r/2) * f, f）
         float r = (_mainCamera.fieldOfView / 180f) * Mathf.PI;
         //n平面
@@ -58,9 +59,43 @@ public class CreateDepthMap : MonoBehaviour
         Vector4 vfLeftDonw = viewM * fLeftDonw;
         Vector4 vfRightDonw = viewM * fRightDonw;
 
-        //4、	求包围盒 (由于光锥的对称性，这里求最大包围盒就好，不是严格意义的AABB)
-        float maxZ = 
+        _vList.Clear();
+        _vList.Add(vnLeftUp);
+        _vList.Add(vnRightUp);
+        _vList.Add(vnLeftDonw);
+        _vList.Add(vnRightDonw);
 
+        _vList.Add(vfLeftUp);
+        _vList.Add(vfRightUp);
+        _vList.Add(vfLeftDonw);
+        _vList.Add(vfRightDonw);
+        //4、	求包围盒 (由于光锥的对称性，这里求最大包围盒就好，不是严格意义的AABB)
+        float maxX = 0;
+        float maxY = 0;
+        float maxZ = 0;
+
+        for (int i = 0; i < _vList.Count; i++)
+        {
+            Vector4 v = _vList[i];
+            if (Mathf.Abs(v.x) > maxX)
+            {
+                maxX = Mathf.Abs(v.x);
+            }
+            if (Mathf.Abs(v.y) > maxY)
+            {
+                maxY = Mathf.Abs(v.y);
+            }
+            if (Mathf.Abs(v.z) > maxZ)
+            {
+                maxZ = Mathf.Abs(v.z);
+            }
+        }
+        //5、	根据aabb确定投影矩阵 包围盒的最大z就是f，Camera.orthographicSize由y max决定 ，还要设置Camera.aspect
+        _lightCamera.orthographic = true;
+        _lightCamera.aspect = maxX / maxY;
+        _lightCamera.orthographicSize = maxY;
+        _lightCamera.nearClipPlane = 0.1f;
+        _lightCamera.farClipPlane = maxZ;
     }
     //void OnRenderImage(RenderTexture source, RenderTexture destination)
     //{
