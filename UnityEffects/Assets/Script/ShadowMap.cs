@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/// <summary>
+/// 接受阴影的物体
+/// </summary>
 public class ShadowMap : MonoBehaviour
 {
 

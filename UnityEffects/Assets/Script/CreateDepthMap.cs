@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// 生成灯光的深度图
+/// </summary>
 public class CreateDepthMap : MonoBehaviour 
 {
-    public Material material;
     public Shader depthMapShader;
-    private Camera _mainCamera;
-    private Camera _lightCamera;
+    private Camera _mainCamera;//主相机
+    private Camera _lightCamera;//灯光相机
     private List<Vector4> _vList = new List<Vector4>();
 	void Start () 
     {
@@ -15,7 +17,7 @@ public class CreateDepthMap : MonoBehaviour
         _lightCamera.depthTextureMode = DepthTextureMode.Depth;
         _lightCamera.clearFlags = CameraClearFlags.SolidColor;
         _lightCamera.backgroundColor = Color.white;
-        _lightCamera.SetReplacementShader(depthMapShader, "RenderType");
+        _lightCamera.SetReplacementShader(depthMapShader, "RenderType");//使用替换渲染方式为知道的renderType类型生成深度图
         RenderTexture depthMap = new RenderTexture(Screen.width, Screen.height, 0);
         depthMap.format = RenderTextureFormat.ARGB32;
         _lightCamera.targetTexture = depthMap;
@@ -110,8 +112,4 @@ public class CreateDepthMap : MonoBehaviour
         _lightCamera.nearClipPlane = 0.1f;
         _lightCamera.farClipPlane = Mathf.Abs(maxZ);
     }
-    //void OnRenderImage(RenderTexture source, RenderTexture destination)
-    //{
-    //    Graphics.Blit(source, destination, material);
-    //}
 }
