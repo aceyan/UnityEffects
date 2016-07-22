@@ -72,16 +72,22 @@
 
 				#if (defined(SHADER_API_GLES) || defined(SHADER_API_GLES3)) && defined(SHADER_API_MOBILE)
 				//GL like
-				depthPixel = (2 * _NearClip) / (_FarClip + _NearClip - depthPixel * (_FarClip - _NearClip));
-
+				//todo test 为什么不使用这种方式呢？因为z在zbuff中并不是线性关系
+				depthPixel = depthPixel * 0.5f + 0.5; 
+				//depthPixel = (2 * _NearClip) / (_FarClip + _NearClip - depthPixel * (_FarClip - _NearClip));
+				
 				#else
 				//DX like
-				depthPixel =  _NearClip / (_FarClip - depthPixel*(_FarClip - _NearClip));
+				//todo test
+				depthPixel = depthPixel;
+				//depthPixel =  _NearClip / (_FarClip - depthPixel*(_FarClip - _NearClip));
 
 				#endif
 
 				float4 textureCol = tex2D(_MainTex, i.uv);
-				float4 shadowCol = (depthPixel - depth) > 0.0002 ? 0.3 : 1;
+
+
+				float4 shadowCol = (depthPixel - depth > 0.0002)  ? 0.3 : 1;
 
 				return textureCol * shadowCol;
 				
