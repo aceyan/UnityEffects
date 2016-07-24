@@ -109,7 +109,7 @@ public class CreateDepthMap : MonoBehaviour
         _lightCamera.orthographic = true;
         _lightCamera.aspect = maxX / maxY;
         _lightCamera.orthographicSize = maxY;
-        _lightCamera.nearClipPlane = 0.1f;
+        _lightCamera.nearClipPlane = 0.0f;
         _lightCamera.farClipPlane = Mathf.Abs(maxZ);
     }
 }
