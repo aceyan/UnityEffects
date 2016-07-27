@@ -44,8 +44,8 @@
 			
 			float4 frag (v2f i) : SV_Target
 			{
-				float4 col = tex2D(_CameraDepthTexture, i.uv);//先把texPos归一化到 [0,1] 纹理坐标空间，对深度图进行采样
-				return col.r;
+				float4 col = tex2D(_CameraDepthTexture, i.uv);
+				return col;
 			}
 			ENDCG
 		}

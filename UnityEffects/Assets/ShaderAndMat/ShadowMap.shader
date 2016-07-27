@@ -72,7 +72,7 @@
 
 				#if (defined(SHADER_API_GLES) || defined(SHADER_API_GLES3)) && defined(SHADER_API_MOBILE)
 				//GL like
-				//todo test 为什么不使用这种方式呢？因为z在zbuff中并不是线性关系
+				//todo test
 				depthPixel = depthPixel * 0.5f + 0.5; 
 				//depthPixel = (2 * _NearClip) / (_FarClip + _NearClip - depthPixel * (_FarClip - _NearClip));
 				
