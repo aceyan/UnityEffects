@@ -9,8 +9,6 @@
 	{
 		Tags { "RenderType"="ShadowMap" }
 		LOD 100
-		ZWrite Off
-
 		Pass
 		{
 			CGPROGRAM
@@ -62,5 +60,17 @@
 			ENDCG
 		}
 	}
+
+	Subshader 
+	{
+		Tags { "RenderType"="Opaque"}
+		Pass {
+    		Lighting Off Fog { Mode off } 
+			SetTexture [_MainTex] {
+				constantColor (1,1,1,1)
+				combine constant
+			}
+		}    
+	}  
 	FallBack "Diffuse"//要想在ReplacementShader使用_CameraDepthTexture，那么记得增加shadowCaster pass,或者FallBack一个
 }

@@ -1,4 +1,4 @@
-﻿Shader "UnityEffects/Unlit"
+﻿Shader "UnityEffects/ShadowMapUnlit"
 {
 	//RenderType 为ShadowMap 的无光照shader，为了展示RenderType 为ShadowMap 的物体才会被渲染到深度图
 	Properties
