@@ -28,7 +28,7 @@ public class ShadowMap : MonoBehaviour
         if (_mat != null && _lightCamera != null)
         {
             //Gl
-            //_mat.SetMatrix("_ViewProjectionMat", _lightCamera.projectionMatrix * _lightCamera.worldToCameraMatrix);//我发现这个投影矩阵式z-[-w,w]的，原来这个矩阵并不是mvp中的m, unity的camera projectionMatrix是GL风格的列矩阵： http://docs.unity3d.com/ScriptReference/Camera-projectionMatrix.html
+            //_mat.SetMatrix("_ViewProjectionMat", _lightCamera.projectionMatrix * _lightCamera.worldToCameraMatrix);// unity的camera projectionMatrix是GL风格的列矩阵： http://docs.unity3d.com/ScriptReference/Camera-projectionMatrix.html 投影后的z-[-w,w]
             //真正的平台相关的投影矩阵
             _mat.SetMatrix("_ViewProjectionMat", GL.GetGPUProjectionMatrix(_lightCamera.projectionMatrix, true) * _lightCamera.worldToCameraMatrix);
             _mat.SetTexture("_DepthMap", _lightCamera.targetTexture);

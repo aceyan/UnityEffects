@@ -68,25 +68,29 @@
 
 				float depthPixel = uvPos.z / uvPos.w;//像素深度
 
-				//深度差值公式：http://www.humus.name/temp/Linearize%20depth.txt
 
 				#if (defined(SHADER_API_GLES) || defined(SHADER_API_GLES3)) && defined(SHADER_API_MOBILE)
 				//GL like
-				//todo test
 				depthPixel = depthPixel * 0.5f + 0.5; 
+
+				//todo test
+				//如果DepthMap.shader使用了Linear01Depth转换后的深度来生成深度图，那么这里也要将像素深度进行相应的插值
+				//深度差值公式：http://www.humus.name/temp/Linearize%20depth.txt
 				//depthPixel = (2 * _NearClip) / (_FarClip + _NearClip - depthPixel * (_FarClip - _NearClip));
 				
 				#else
 				//DX like
-				//todo test
 				depthPixel = depthPixel;
+
+				//todo test
+				//如果DepthMap.shader使用了Linear01Depth转换后的深度来生成深度图，那么这里也要将像素深度进行相应的插值
 				//depthPixel =  _NearClip / (_FarClip - depthPixel*(_FarClip - _NearClip));
 
 				#endif
 
 				float4 textureCol = tex2D(_MainTex, i.uv);
 
-
+				//使用一个偏移值，手动调整深度的误差
 				float4 shadowCol = (depthPixel - depth > 0.0002)  ? 0.3 : 1;
 
 				return textureCol * shadowCol;
