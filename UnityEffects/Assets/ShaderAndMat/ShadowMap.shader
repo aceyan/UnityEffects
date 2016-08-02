@@ -4,6 +4,7 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
+		_bias ("bias", float) = 0.002
 	}
 	SubShader
 	{
@@ -39,7 +40,8 @@
 			uniform float _NearClip;
 			uniform float _FarClip;
 			float4 _DepthMap_ST;
-			
+			float _bias;
+
 			v2f vert (appdata v)
 			{
 				v2f o;
@@ -91,7 +93,7 @@
 				float4 textureCol = tex2D(_MainTex, i.uv);
 
 				//使用一个偏移值，手动调整深度的误差
-				float4 shadowCol = (depthPixel - depth > 0.002)  ? 0.3 : 1;
+				float4 shadowCol = (depthPixel - depth > _bias)  ? 0.3 : 1;
 
 				return textureCol * shadowCol;
 				
