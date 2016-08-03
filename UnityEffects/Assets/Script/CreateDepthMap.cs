@@ -66,10 +66,9 @@ public class CreateDepthMap : MonoBehaviour
         Vector4 fCenter = (wfLeftUp + wfRightUp + wfLeftDonw + wfRightDonw) / 4f;
 
         _lightCamera.transform.position = (nCenter + fCenter) / 2f;
-        //2、	求光view矩阵  用world to camera
-
+        //3、	求光view矩阵
         Matrix4x4 lgihtw2v = _lightCamera.transform.worldToLocalMatrix;//本来这里使用_lightCamera.worldToCameraMatrix,但是同上面不使用_mainCamera.cameraToWorldMatrix的原因一样，我们直接使用worldToLocalMatrix
-        //3、	把顶点从世界空间变换到光view空间
+        //4、	把顶点从世界空间变换到光view空间
         Vector4 vnLeftUp = lgihtw2v * wnLeftUp;
         Vector4 vnRightUp = lgihtw2v * wnRightUp;
         Vector4 vnLeftDonw = lgihtw2v * wnLeftDonw;
@@ -90,7 +89,7 @@ public class CreateDepthMap : MonoBehaviour
         _vList.Add(vfRightUp);
         _vList.Add(vfLeftDonw);
         _vList.Add(vfRightDonw);
-        //4、	求包围盒 (由于光锥xy轴的对称性，这里求最大包围盒就好，不是严格意义的AABB)
+        //5、	求包围盒 (由于光锥xy轴的对称性，这里求最大包围盒就好，不是严格意义的AABB)
         float maxX = -float.MaxValue;
         float maxY = -float.MaxValue;
         float maxZ = -float.MaxValue;
@@ -115,14 +114,14 @@ public class CreateDepthMap : MonoBehaviour
                 minZ = v.z;
             }
         }
-        //4.5 优化，如果8个顶点在光锥view空间中的z<0,那么如果n=0，就可能出现应该被渲染depthmap的物体被光锥近裁面剪裁掉的情况，所以z < 0 的情况下要延光照负方向移动光源位置以避免这种情况
+        //5.5 优化，如果8个顶点在光锥view空间中的z<0,那么如果n=0，就可能出现应该被渲染depthmap的物体被光锥近裁面剪裁掉的情况，所以z < 0 的情况下要延光照负方向移动光源位置以避免这种情况
         if(minZ < 0)
         {
             _lightCamera.transform.position += -_lightCamera.transform.forward.normalized * Mathf.Abs(minZ);
             maxZ = maxZ - minZ;
         }
 
-        //5、	根据包围盒确定投影矩阵 包围盒的最大z就是f，Camera.orthographicSize由y max决定 ，还要设置Camera.aspect
+        //6、	根据包围盒确定投影矩阵 包围盒的最大z就是f，Camera.orthographicSize由y max决定 ，还要设置Camera.aspect
         _lightCamera.orthographic = true;
         _lightCamera.aspect = maxX / maxY;
         _lightCamera.orthographicSize = maxY;
