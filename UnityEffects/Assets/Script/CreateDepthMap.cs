@@ -33,11 +33,8 @@ public class CreateDepthMap : MonoBehaviour
 	}
 
     void Update()
-    {//根据主相机的视锥来确定灯光相机的设置
-        _lightCamera.transform.position = _mainCamera.transform.position;
-        //1、	求光view矩阵  用world to camera
-        Matrix4x4 lgihtw2v = _lightCamera.worldToCameraMatrix;
-        //2、	求视锥8顶点 （主相机空间中） n平面（aspect * y, tan(r/2)* n,n）  f平面（aspect*y, tan(r/2) * f, f）
+    {
+        //1、	求视锥8顶点 （主相机空间中） n平面（aspect * y, tan(r/2)* n,n）  f平面（aspect*y, tan(r/2) * f, f）
         float r = (_mainCamera.fieldOfView / 180f) * Mathf.PI;
         //n平面
         Vector4 nLeftUp = new Vector4(-_mainCamera.aspect * Mathf.Tan(r / 2) * _mainCamera.nearClipPlane, Mathf.Tan(r / 2) * _mainCamera.nearClipPlane, _mainCamera.nearClipPlane, 1);
@@ -51,17 +48,37 @@ public class CreateDepthMap : MonoBehaviour
         Vector4 fLeftDonw = new Vector4(-_mainCamera.aspect * Mathf.Tan(r / 2) * _mainCamera.farClipPlane, -Mathf.Tan(r / 2) * _mainCamera.farClipPlane, _mainCamera.farClipPlane, 1);
         Vector4 fRightDonw = new Vector4(_mainCamera.aspect * Mathf.Tan(r / 2) * _mainCamera.farClipPlane, -Mathf.Tan(r / 2) * _mainCamera.farClipPlane, _mainCamera.farClipPlane, 1);
 
-        Matrix4x4 mainv2w = _mainCamera.cameraToWorldMatrix;
-        //3、	把顶点从主相机空间先转换到世界空间，再从世界空间变换到光view空间
-        Vector4 vnLeftUp = lgihtw2v * mainv2w * nLeftUp;
-        Vector4 vnRightUp = lgihtw2v * mainv2w * nRightUp;
-        Vector4 vnLeftDonw = lgihtw2v * mainv2w * nLeftDonw;
-        Vector4 vnRightDonw = lgihtw2v * mainv2w * nRightDonw;
+        //2、将8个顶点变换到世界空间
+
+        Matrix4x4 mainv2w = _mainCamera.transform.localToWorldMatrix;//本来这里的矩阵使用_mainCamera.cameraToWorldMatrix,但是请看：http://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html   cameraToWorldMatrix返回的是GL风格的camera空间的矩阵，z是负的，跟untiy编辑器中的不对应，（也是坑爹的很，就不能统一吗），所以我们直接使用localToWorldMatrix
+        Vector4 wnLeftUp = mainv2w * nLeftUp;
+        Vector4 wnRightUp =  mainv2w * nRightUp;
+        Vector4 wnLeftDonw =  mainv2w * nLeftDonw;
+        Vector4 wnRightDonw =  mainv2w * nRightDonw;
         //
-        Vector4 vfLeftUp = lgihtw2v * mainv2w * fLeftUp;
-        Vector4 vfRightUp = lgihtw2v * mainv2w * fRightUp;
-        Vector4 vfLeftDonw = lgihtw2v * mainv2w * fLeftDonw;
-        Vector4 vfRightDonw = lgihtw2v * mainv2w * fRightDonw;
+        Vector4 wfLeftUp =  mainv2w * fLeftUp;
+        Vector4 wfRightUp =  mainv2w * fRightUp;
+        Vector4 wfLeftDonw =  mainv2w * fLeftDonw;
+        Vector4 wfRightDonw =  mainv2w * fRightDonw;
+
+        //将灯光相机设置在_mainCamera视锥中心
+        Vector4 nCenter = (wnLeftUp + wnRightUp + wnLeftDonw + wnRightDonw) / 4f;
+        Vector4 fCenter = (wfLeftUp + wfRightUp + wfLeftDonw + wfRightDonw) / 4f;
+
+        _lightCamera.transform.position = (nCenter + fCenter) / 2f;
+        //2、	求光view矩阵  用world to camera
+
+        Matrix4x4 lgihtw2v = _lightCamera.transform.worldToLocalMatrix;//本来这里使用_lightCamera.worldToCameraMatrix,但是同上面不使用_mainCamera.cameraToWorldMatrix的原因一样，我们直接使用worldToLocalMatrix
+        //3、	把顶点从世界空间变换到光view空间
+        Vector4 vnLeftUp = lgihtw2v * wnLeftUp;
+        Vector4 vnRightUp = lgihtw2v * wnRightUp;
+        Vector4 vnLeftDonw = lgihtw2v * wnLeftDonw;
+        Vector4 vnRightDonw = lgihtw2v * wnLeftDonw;
+        //
+        Vector4 vfLeftUp = lgihtw2v * wfLeftUp;
+        Vector4 vfRightUp = lgihtw2v * wfRightUp;
+        Vector4 vfLeftDonw = lgihtw2v * wfLeftDonw;
+        Vector4 vfRightDonw = lgihtw2v * wfRightDonw;
 
         _vList.Clear();
         _vList.Add(vnLeftUp);
