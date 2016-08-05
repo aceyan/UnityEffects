@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TestRot : MonoBehaviour {
 
-    float angle = 2; 
+    public float angle = 1; 
 	// Use this for initialization
 	void Start () {
 	

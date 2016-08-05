@@ -1,7 +1,8 @@
 ﻿Shader "UnityEffects/ShadowProjector" {
 	Properties {
-		_ShadowTex ("Shadow", 2D) = "gray" {}
+		_ShadowTex ("ShadowTex", 2D) = "gray" {}
 		_bulerWidth ("BulerWidth", float) = 1
+		_shadowfactor ("Shadowfactor", Range(0,1)) = 0.5
 	}
 	SubShader {
 		Tags { "Queue"="Transparent" }
@@ -25,6 +26,7 @@
 			sampler2D _ShadowTex;
 			uniform half4 _ShadowTex_TexelSize;
 			float _bulerWidth;
+			float _shadowfactor;
 
 			v2f vert(float4 vertex:POSITION){
 				v2f o;
@@ -34,21 +36,21 @@
 			}
 
 			float4 frag(v2f i):COLOR{
-				float4 finalCol = float4(0.4,0.4,0.4,0.4);
+				
 				float a = tex2Dproj(_ShadowTex, UNITY_PROJ_COORD(i.sproj)).a;
 				float4 uv4= UNITY_PROJ_COORD(i.sproj);
 				float2 uv = uv4.xy / uv4.w ;
 
-				a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(1,0)).a;
-				a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(0,1)).a;
-				a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(-1,0)).a;
-				a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(0,-1)).a;
+				//blur来柔化边缘
+				//a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(1,0)).a;
+				//a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(0,1)).a;
+				//a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(-1,0)).a;
+				//a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(0,-1)).a;
 
-			
-				a = a/5;
+				//a = a/5;
 				if(a > 0)
 				{
-					return  float4(1,1,1,1) - finalCol * a;
+					return  float4(1,1,1,1) * (1 - _shadowfactor * a);
 				}
 				else
 				{
