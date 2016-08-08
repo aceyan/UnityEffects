@@ -1,4 +1,6 @@
-﻿Shader "UnityEffects/ShadowProjector" {
+﻿// Upgrade NOTE: replaced '_Projector' with 'unity_Projector'
+
+Shader "UnityEffects/ShadowProjector" {
 	Properties {
 		_ShadowTex ("ShadowTex", 2D) = "gray" {}
 		_bulerWidth ("BulerWidth", float) = 1
@@ -22,7 +24,7 @@
 				float4 sproj:TEXCOORD0;
 			};
 
-			float4x4 _Projector;
+			float4x4 unity_Projector;
 			sampler2D _ShadowTex;
 			uniform half4 _ShadowTex_TexelSize;
 			float _bulerWidth;
@@ -31,7 +33,7 @@
 			v2f vert(float4 vertex:POSITION){
 				v2f o;
 				o.pos = mul(UNITY_MATRIX_MVP, vertex);
-				o.sproj = mul(_Projector, vertex);
+				o.sproj = mul(unity_Projector, vertex);
 				return o;
 			}
 

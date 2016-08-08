@@ -1,4 +1,6 @@
-﻿Shader "UnityEffects/ShadowMap"
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "UnityEffects/ShadowMap"
 {
 	//渲染接受阴影物体
 	Properties
@@ -47,7 +49,7 @@
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				matrix mvp = mul(_ViewProjectionMat ,_Object2World);
+				matrix mvp = mul(_ViewProjectionMat ,unity_ObjectToWorld);
 				o.projectionPos = mul( mvp,float4(v.vertex.xyz,1));//投影到贴图的齐次剪裁空间
 				return o;
 			}
