@@ -183,7 +183,10 @@ PlayerSettings:
       m_Width: 128
       m_Height: 128
   m_BuildTargetBatching: []
-  m_BuildTargetGraphicsAPIs: []
+  m_BuildTargetGraphicsAPIs:
+  - m_BuildTarget: AndroidPlayer
+    m_APIs: 080000000b000000
+    m_Automatic: 1
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
   wiiUTitleID: 0005000011000000
@@ -416,6 +419,8 @@ PlayerSettings:
   Standalone::ScriptingBackend: 0
   WebPlayer::ScriptingBackend: 0
   boolPropertyNames:
+  - Android::RequireES31
+  - Android::RequireES31AEP
   - Android::VR::enable
   - Metro::VR::enable
   - N3DS::VR::enable
@@ -434,6 +439,8 @@ PlayerSettings:
   - XboxOne::enus
   - iOS::VR::enable
   - tvOS::VR::enable
+  Android::RequireES31: 0
+  Android::RequireES31AEP: 0
   Android::VR::enable: 0
   Metro::VR::enable: 0
   N3DS::VR::enable: 0

@@ -33,7 +33,7 @@ public class CreateDepthMap : MonoBehaviour
         }
 	}
 
-    void Update()
+    void LateUpdate()
     {
         ShadowUtils.SetLightCamera(_mainCamera, _lightCamera);
     }

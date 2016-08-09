@@ -11,7 +11,7 @@ namespace Assets.Script.Utils
         private static List<Vector4> _vList = new List<Vector4>();
 
         /// <summary>
-        /// 更具主相机，设置光照相机
+        /// 根据主相机，设置光照相机
         /// </summary>
         /// <param name="mainCamera"></param>
         /// <param name="lightCamera"></param>
@@ -111,5 +111,77 @@ namespace Assets.Script.Utils
             lightCamera.nearClipPlane = 0.0f;
             lightCamera.farClipPlane = Mathf.Abs(maxZ);
         }
+        /// <summary>
+        /// 根据场景包围盒来设置光锥
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="lightCamera"></param>
+        public static void SetLightCamera(Bounds b, Camera lightCamera)
+        {
+            //1、将lightCamera放在包围盒中心
+            lightCamera.transform.position = b.center;
+            //2、	求光view矩阵
+            Matrix4x4 lgihtw2v = lightCamera.transform.worldToLocalMatrix;//本来这里使用lightCamera.worldToCameraMatrix,但是同上面不使用mainCamera.cameraToWorldMatrix的原因一样，我们直接使用worldToLocalMatrix
+            //3、	把顶点从世界空间变换到光view空间
+            Vector4 vnLeftUp = lgihtw2v * new Vector3(b.max.x, b.max.y, b.max.z);
+            Vector4 vnRightUp = lgihtw2v * new Vector3(b.max.x, b.min.y, b.max.z);
+            Vector4 vnLeftDonw = lgihtw2v * new Vector3(b.max.x, b.max.y, b.min.z);
+            Vector4 vnRightDonw = lgihtw2v * new Vector3(b.min.x, b.max.y, b.max.z);
+            //
+            Vector4 vfLeftUp = lgihtw2v * new Vector3(b.min.x, b.min.y, b.min.z); ;
+            Vector4 vfRightUp = lgihtw2v * new Vector3(b.min.x, b.max.y, b.min.z); ;
+            Vector4 vfLeftDonw = lgihtw2v * new Vector3(b.min.x, b.min.y, b.max.z); ;
+            Vector4 vfRightDonw = lgihtw2v * new Vector3(b.max.x, b.min.y, b.min.z); ;
+
+            _vList.Clear();
+            _vList.Add(vnLeftUp);
+            _vList.Add(vnRightUp);
+            _vList.Add(vnLeftDonw);
+            _vList.Add(vnRightDonw);
+
+            _vList.Add(vfLeftUp);
+            _vList.Add(vfRightUp);
+            _vList.Add(vfLeftDonw);
+            _vList.Add(vfRightDonw);
+            //4、	求包围盒 (由于光锥xy轴的对称性，这里求最大包围盒就好，不是严格意义的AABB)
+            float maxX = -float.MaxValue;
+            float maxY = -float.MaxValue;
+            float maxZ = -float.MaxValue;
+            float minZ = float.MaxValue;
+            for (int i = 0; i < _vList.Count; i++)
+            {
+                Vector4 v = _vList[i];
+                if (Mathf.Abs(v.x) > maxX)
+                {
+                    maxX = Mathf.Abs(v.x);
+                }
+                if (Mathf.Abs(v.y) > maxY)
+                {
+                    maxY = Mathf.Abs(v.y);
+                }
+                if (v.z > maxZ)
+                {
+                    maxZ = v.z;
+                }
+                else if (v.z < minZ)
+                {
+                    minZ = v.z;
+                }
+            }
+            //4.5 优化，如果8个顶点在光锥view空间中的z<0,那么如果n=0，就可能出现应该被渲染depthmap的物体被光锥近裁面剪裁掉的情况，所以z < 0 的情况下要延光照负方向移动光源位置以避免这种情况
+            if (minZ < 0)
+            {
+                lightCamera.transform.position += -lightCamera.transform.forward.normalized * Mathf.Abs(minZ);
+                maxZ = maxZ - minZ;
+            }
+
+            //5、	根据包围盒确定投影矩阵 包围盒的最大z就是f，Camera.orthographicSize由y max决定 ，还要设置Camera.aspect
+            lightCamera.orthographic = true;
+            lightCamera.aspect = maxX / maxY;
+            lightCamera.orthographicSize = maxY;
+            lightCamera.nearClipPlane = 0.0f;
+            lightCamera.farClipPlane = Mathf.Abs(maxZ);
+        }
+
     }
 }

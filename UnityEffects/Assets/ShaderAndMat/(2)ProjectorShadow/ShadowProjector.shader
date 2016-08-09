@@ -5,6 +5,7 @@ Shader "UnityEffects/ShadowProjector" {
 		_ShadowTex ("ShadowTex", 2D) = "gray" {}
 		_bulerWidth ("BulerWidth", float) = 1
 		_shadowfactor ("Shadowfactor", Range(0,1)) = 0.5
+		_ShadowMask ("ShadowMask",2D) = "white"{}
 	}
 	SubShader {
 		Tags { "Queue"="Transparent" }
@@ -26,6 +27,7 @@ Shader "UnityEffects/ShadowProjector" {
 
 			float4x4 unity_Projector;
 			sampler2D _ShadowTex;
+			sampler2D _ShadowMask;
 			uniform half4 _ShadowTex_TexelSize;
 			float _bulerWidth;
 			float _shadowfactor;
@@ -39,9 +41,11 @@ Shader "UnityEffects/ShadowProjector" {
 
 			float4 frag(v2f i):COLOR{
 				
-				float a = tex2Dproj(_ShadowTex, UNITY_PROJ_COORD(i.sproj)).a;
-				float4 uv4= UNITY_PROJ_COORD(i.sproj);
-				float2 uv = uv4.xy / uv4.w ;
+				half4 shadowCol = tex2Dproj(_ShadowTex, UNITY_PROJ_COORD(i.sproj));
+				half maskCol = tex2Dproj(_ShadowMask, UNITY_PROJ_COORD(i.sproj)).r;
+				half a = (shadowCol * maskCol).a;
+				//float4 uv4= UNITY_PROJ_COORD(i.sproj);
+				//float2 uv = uv4.xy / uv4.w ;
 
 				//blur来柔化边缘
 				//a += tex2D(_ShadowTex, uv + _ShadowTex_TexelSize.xy * _bulerWidth * float2(1,0)).a;
