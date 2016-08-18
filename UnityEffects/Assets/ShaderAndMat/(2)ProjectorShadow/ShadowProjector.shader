@@ -8,7 +8,7 @@ Shader "UnityEffects/ShadowProjector" {
 		_ShadowMask ("ShadowMask",2D) = "white"{}
 	}
 	SubShader {
-		Tags { "Queue"="Transparent" }
+		Tags { "Queue"="AlphaTest+1" }
 		Pass {
 			ZWrite Off
 			ColorMask RGB

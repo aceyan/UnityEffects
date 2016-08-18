@@ -7,11 +7,12 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: sum_wolfgirl02
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION
+  m_Shader: {fileID: 4800000, guid: e5cf0520265f5d44a823a1fef3d71246, type: 3}
+  m_ShaderKeywords: _EMISSION _FLOWOVERLAY_OFF _FRESNEL_ON
   m_LightmapFlags: 1
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: TransparentAlphaBlended
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -46,6 +47,18 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _FlowAlphaMask
+      second:
+        m_Texture: {fileID: 10904, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _FlowTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 9361852e14d982d4c8f50aed4b895327, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 2800000, guid: 9361852e14d982d4c8f50aed4b895327, type: 3}
@@ -71,8 +84,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _AlphaCutoff
+      second: 0.5
+    - first:
         name: _BumpScale
       second: 1
+    - first:
+        name: _Cull
+      second: 2
     - first:
         name: _Cutoff
       second: 0.5
@@ -81,7 +100,22 @@ Material:
       second: 1
     - first:
         name: _DstBlend
+      second: 10
+    - first:
+        name: _FlowExposure
+      second: 1
+    - first:
+        name: _Flowoverlay
       second: 0
+    - first:
+        name: _FlowxSpeed
+      second: 0
+    - first:
+        name: _FlowySpeed
+      second: 0.52
+    - first:
+        name: _Fresnel
+      second: 1
     - first:
         name: _GlossMapScale
       second: 1
@@ -96,13 +130,16 @@ Material:
       second: 0
     - first:
         name: _Mode
-      second: 0
+      second: 2
     - first:
         name: _OcclusionStrength
       second: 1
     - first:
         name: _Parallax
       second: 0.02
+    - first:
+        name: _RimPower
+      second: 2.63
     - first:
         name: _SmoothnessTextureChannel
       second: 0
@@ -111,13 +148,13 @@ Material:
       second: 1
     - first:
         name: _SrcBlend
-      second: 1
+      second: 5
     - first:
         name: _UVSec
       second: 0
     - first:
         name: _ZWrite
-      second: 1
+      second: 0
     m_Colors:
     - first:
         name: _Color
@@ -125,3 +162,12 @@ Material:
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _FlowColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _RimColor
+      second: {r: 0.90344834, g: 1, b: 0, a: 1}
+    - first:
+        name: _TintColor
+      second: {r: 0.5588235, g: 0.57936853, b: 0.57936853, a: 0.803}

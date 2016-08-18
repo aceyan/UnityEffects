@@ -14,6 +14,7 @@ public class ShadowProjector : MonoBehaviour
     private List<Renderer> _shadowCasterList = new List<Renderer>();
     private BoxCollider _boundsCollider;
     public float boundsOffset = 1;//边界偏移，
+    public Shader shadowReplaceShader;
 	void Start () 
     {
         _projector = GetComponent<Projector>();
@@ -29,6 +30,7 @@ public class ShadowProjector : MonoBehaviour
             _shadowTex = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
             _shadowTex.filterMode = FilterMode.Bilinear;
             _lightCamera.targetTexture = _shadowTex;
+            _lightCamera.SetReplacementShader(shadowReplaceShader, "RenderType");
             _projector.material.SetTexture("_ShadowTex", _shadowTex);
             _projector.ignoreLayers = LayerMask.GetMask("ShadowCaster");
         }
