@@ -49,7 +49,7 @@ Material:
     - first:
         name: _FlowAlphaMask
       second:
-        m_Texture: {fileID: 10904, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 2800000, guid: 6d87e7af2ac28c6478e207ee4903f98a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
