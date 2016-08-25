@@ -135,7 +135,5 @@
 			ENDCG			
 		}
 	} 
-
-	Fallback "QinYou/Unlit"
 	CustomEditor "CharactarShaderGUI"
 }
