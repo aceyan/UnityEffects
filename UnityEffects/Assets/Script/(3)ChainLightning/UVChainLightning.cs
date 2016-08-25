@@ -5,7 +5,6 @@ using UnityEngine;
 /// uv贴图闪电链
 /// </summary>
 [RequireComponent(typeof(LineRenderer))]
-//[RequireComponent(typeof(NcUvAnimation))]
 [ExecuteInEditMode]
 public class UVChainLightning : MonoBehaviour
 {
@@ -68,7 +67,7 @@ public class UVChainLightning : MonoBehaviour
             float midZ = (startPos.z + destPos.z) / 2;
 
             midX += (float)(UnityEngine.Random.value - 0.5) * displace;
-            //midY += (float)(UnityEngine.Random.value - 0.5) * displace;
+            midY += (float)(UnityEngine.Random.value - 0.5) * displace;
             midZ += (float)(UnityEngine.Random.value - 0.5) * displace;
 
             Vector3 midPos = new Vector3(midX,midY,midZ);
