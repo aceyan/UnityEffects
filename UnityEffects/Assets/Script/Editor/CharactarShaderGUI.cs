@@ -96,7 +96,7 @@ public class CharactarShaderGUI : ShaderGUI
                     break;
                 //融合
                 case BlendMode.AlphaBlended:
-                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.SetOverrideTag("RenderType", "TransparentAlphaBlended");
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_ZWrite", 0);
@@ -105,7 +105,7 @@ public class CharactarShaderGUI : ShaderGUI
                     break;
                 //add叠加
                 case BlendMode.AlphaAdditve:
-                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.SetOverrideTag("RenderType", "TransparentAlphaAdditve");
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_ZWrite", 0);
