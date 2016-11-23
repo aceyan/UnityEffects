@@ -10,9 +10,9 @@ Material:
   m_Shader: {fileID: 4800000, guid: e5cf0520265f5d44a823a1fef3d71246, type: 3}
   m_ShaderKeywords: _EMISSION _FLOWOVERLAY_ADD _FRESNEL_ON
   m_LightmapFlags: 1
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Opaque
+    RenderType: TransparentAlphaBlended
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -100,7 +100,7 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 0
+      second: 10
     - first:
         name: _FlowExposure
       second: 1
@@ -130,7 +130,7 @@ Material:
       second: 0
     - first:
         name: _Mode
-      second: 0
+      second: 2
     - first:
         name: _OcclusionStrength
       second: 1
@@ -148,13 +148,13 @@ Material:
       second: 1
     - first:
         name: _SrcBlend
-      second: 1
+      second: 5
     - first:
         name: _UVSec
       second: 0
     - first:
         name: _ZWrite
-      second: 1
+      second: 0
     m_Colors:
     - first:
         name: _Color
@@ -170,4 +170,4 @@ Material:
       second: {r: 0.90344834, g: 1, b: 0, a: 1}
     - first:
         name: _TintColor
-      second: {r: 0.5588235, g: 0.57936853, b: 0.57936853, a: 0.803}
+      second: {r: 0.5588235, g: 0.57936853, b: 0.57936853, a: 0.516}
