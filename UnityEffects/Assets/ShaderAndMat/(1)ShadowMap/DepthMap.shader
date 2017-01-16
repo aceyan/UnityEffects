@@ -1,6 +1,6 @@
 ﻿Shader "UnityEffects/DepthMap"
 {
-	//生成深度图
+	//生成深度图,从_CameraDepthTexture取出
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
@@ -42,7 +42,7 @@
 				o.texPos.x = o.vertex.x * 0.5f + 0.5f * o.vertex.w;//变换到x[0,w] y[0,w]的空间
 				o.texPos.y = o.vertex.y * 0.5f  + 0.5f * o.vertex.w;
 				if (_ProjectionParams.x < 0)//uv空间与平台有关
-					 o.texPos.y = o.vertex.w - o.texPos.y;//http://docs.unity3d.com/Manual/SL-PlatformDifferences.html
+					 o.texPos.y = o.vertex.w - o.texPos.y;//https://docs.unity3d.com/Manual/SL-PlatformDifferences.html
 				return o;
 			}
 			

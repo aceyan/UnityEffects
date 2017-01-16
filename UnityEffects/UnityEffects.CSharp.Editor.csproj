@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ShaderAndMat\(1)ShadowMap\DepthMap.shader" />
+    <None Include="Assets\ShaderAndMat\(1)ShadowMap\DepthMap2.shader" />
     <None Include="Assets\ShaderAndMat\(1)ShadowMap\ShadowMap.shader" />
     <None Include="Assets\ShaderAndMat\(1)ShadowMap\ShadowMapUnlit.shader" />
     <None Include="Assets\ShaderAndMat\(1)ShadowMap\ShowDepthMap.shader" />
